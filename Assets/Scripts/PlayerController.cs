@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     private bool jumpRequest;
     private bool isJumping;
 
+    public Transform groundCheck;
+    public float groundCheckDistance = 0.1f;
+
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
@@ -59,7 +62,8 @@ public class PlayerController : MonoBehaviour
             FireBullet();
         }
 
-        JumpAnim(); 
+        GroundControl();
+        JumpAnim();
     }
 
     private void FixedUpdate()
@@ -129,18 +133,23 @@ public class PlayerController : MonoBehaviour
         canMove = true;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void GroundControl()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        RaycastHit2D hit = Physics2D.Raycast(
+            groundCheck.position,
+            Vector2.down,
+            groundCheckDistance,
+            LayerMask.GetMask("Ground")
+        );
+
+        Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckDistance, Color.blue);
+
+        if (hit.collider != null)
         {
             isGrounded = true;
             isJumping = false;
         }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        else
         {
             isGrounded = false;
             isJumping = true;
