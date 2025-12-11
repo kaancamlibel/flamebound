@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyControl : MonoBehaviour
+public class EnemySimpleAI : MonoBehaviour
 {
     public float moveSpeed = 3f;
     private Rigidbody2D rb;
