@@ -40,8 +40,6 @@ public class EnemyControl : MonoBehaviour
         facingRight = true;
 
         baseSpeed = moveSpeed;
-
-        StartCoroutine(PatrolPauseRoutine());
     }
 
     void Update()
@@ -122,7 +120,7 @@ public class EnemyControl : MonoBehaviour
             playerLayer
         );
 
-        Debug.DrawRay(transform.position, direction * playerDetectionRange, Color.red);
+        Debug.DrawRay(transform.position, direction * playerDetectionRange, Color.blue);
 
         if (hit.collider != null)
         {
@@ -139,29 +137,11 @@ public class EnemyControl : MonoBehaviour
         }
     }
 
-    IEnumerator PatrolPauseRoutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(patrolStopInterval);
-
-            isPaused = true;
-            moveSpeed = 0f;
-            animator.SetFloat("speed", 0f);
-
-            yield return new WaitForSeconds(stopDuration);
-
-            moveSpeed = baseSpeed;
-            isPaused = false;
-        }
-    }
-
     IEnumerator PausePatrol()
     {
         isPaused = true;
 
-        // 1 saniye dur
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(stopDuration);
 
         // Durma bitti
         isPaused = false;
