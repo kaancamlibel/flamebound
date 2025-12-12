@@ -1194,9 +1194,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1546676688}
   - component: {fileID: 1546676687}
+  - component: {fileID: 1546676691}
   - component: {fileID: 1546676685}
   - component: {fileID: 1546676684}
   - component: {fileID: 1546676689}
+  - component: {fileID: 1546676690}
   m_Layer: 8
   m_Name: Lizard
   m_TagString: Enemy
@@ -1374,6 +1376,48 @@ MonoBehaviour:
     m_Bits: 64
   wallCheck: {fileID: 1695424958}
   wallDetectionRange: 0.5
+  facingRight: 0
+  isHolding: 0
+--- !u!114 &1546676690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546676683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c57c19e37385594c8b7a2bc0eb1b2f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRange: 5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  isAttacking: 0
+  speed: 5
+  fireBall: {fileID: 8154926024626989640, guid: 794c85a7d245b33428629b13fc1fecf3, type: 3}
+--- !u!95 &1546676691
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546676683}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5734329c47e6ad64ca15cd039b2190f0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1695424957
 GameObject:
   m_ObjectHideFlags: 0

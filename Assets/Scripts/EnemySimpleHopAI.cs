@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySimpleHopAI : MonoBehaviour
@@ -20,19 +18,22 @@ public class EnemySimpleHopAI : MonoBehaviour
 
     public Transform wallCheck;
     public float wallDetectionRange = 0.5f;
-    private bool facingRight;
+    public bool facingRight;
 
     private SpriteRenderer sr;
     private Rigidbody2D rb;
 
     private int currentFrame;
     private float timer;
-    private bool isHolding;
+    public bool isHolding;
+
+    private EnemyHopAttack hopAttack;
 
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        hopAttack = GetComponent<EnemyHopAttack>();
     }
 
     private void Start()
@@ -50,7 +51,7 @@ public class EnemySimpleHopAI : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        if (timer >= frameRate)
+        if (timer >= frameRate && !hopAttack.isAttacking)
         {
             timer = 0f;
             currentFrame++;
