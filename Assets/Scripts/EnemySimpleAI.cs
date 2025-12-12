@@ -94,16 +94,18 @@ public class EnemySimpleAI : MonoBehaviour
 
     private void CheckWall()
     {
-        RaycastHit2D groundInfo = Physics2D.Raycast(
+        Vector2 direction = facingRight ? Vector2.right : Vector2.left;
+
+        RaycastHit2D wallInfo = Physics2D.Raycast(
             wallCheck.position,
-            Vector2.right,
+            direction,
             wallDetectionRange,
             groundLayer
         );
 
-        Debug.DrawRay(wallCheck.position, Vector2.right * wallDetectionRange, Color.red);
+        Debug.DrawRay(wallCheck.position, direction * wallDetectionRange, Color.red);
 
-        if (groundInfo)
+        if (wallInfo)
         {
             Flip();
         }
