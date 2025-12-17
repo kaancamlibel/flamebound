@@ -14,10 +14,11 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 10f;
     private bool isGrounded;
     private bool jumpRequest;
-    private bool isJumping;
+    public bool isJumping;
 
     public Transform groundCheck;
     public float groundCheckDistance = 0.1f;
+    public LayerMask groundLayer;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -28,6 +29,9 @@ public class PlayerController : MonoBehaviour
     public Transform bulletPosLeft;
     public float attackWait = 0.5f;
 
+    public Transform lightPos;
+    private Vector2 lightDefaultPos;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -37,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        // Initialize variables if needed
+        lightDefaultPos = lightPos.localPosition;
     }
 
     private void Update()
@@ -84,9 +88,15 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
 
         if (movement.x > 0)
+        {
             spriteRenderer.flipX = false;
+            lightPos.localPosition = lightDefaultPos;
+        }
         else if (movement.x < 0)
+        {
             spriteRenderer.flipX = true;
+            lightPos.localPosition = new Vector2(-lightDefaultPos.x, lightDefaultPos.y);
+        }
 
         animator.SetFloat("isRunning", Mathf.Abs(movement.x));
     }
@@ -139,7 +149,7 @@ public class PlayerController : MonoBehaviour
             groundCheck.position,
             Vector2.down,
             groundCheckDistance,
-            LayerMask.GetMask("Ground")
+            groundLayer
         );
 
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckDistance, Color.blue);
