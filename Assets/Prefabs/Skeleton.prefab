@@ -43,7 +43,8 @@ GameObject:
   - component: {fileID: 1537743611690163886}
   - component: {fileID: 2004905518630611699}
   - component: {fileID: 8251934711566314614}
-  - component: {fileID: 5019379271622604206}
+  - component: {fileID: 2944796826176693018}
+  - component: {fileID: 8613244667844654815}
   - component: {fileID: 6503555727520109016}
   m_Layer: 8
   m_Name: Skeleton
@@ -169,8 +170,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &5019379271622604206
-CapsuleCollider2D:
+--- !u!61 &2944796826176693018
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -201,9 +202,64 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.011813355, y: -0.022483444}
-  m_Size: {x: 0.13937072, y: 0.2750331}
-  m_Direction: 0
+  m_Offset: {x: 0.0099298395, y: -0.02977879}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 0.32, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.11875621, y: 0.2604424}
+  m_EdgeRadius: 0
+--- !u!61 &8613244667844654815
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917967606098787920}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.011014029, y: 0.11883865}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 0.32, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.10202369, y: 0.017193705}
+  m_EdgeRadius: 0
 --- !u!114 &6503555727520109016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +287,7 @@ MonoBehaviour:
   wallCheck: {fileID: 4177600088724911301}
   patrolStopInterval: 10
   stopDuration: 3
+  forcePush: 25
 --- !u!1 &4472389790796167492
 GameObject:
   m_ObjectHideFlags: 0

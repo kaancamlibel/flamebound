@@ -28,6 +28,8 @@ public class EnemySimpleAI : MonoBehaviour
     private bool playerInSight = false;
     private float patrolTimer = 0f;
 
+    public float forcePush = 5f;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -160,5 +162,22 @@ public class EnemySimpleAI : MonoBehaviour
 
         // Sprite'ý çevir
         transform.Rotate(0f, 180f, 0f);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Rigidbody2D playerRb = collision.GetComponent<Rigidbody2D>();
+
+            if (playerRb != null)
+            {
+                Debug.Log("Enemy collided with Player, applying force.");
+
+                playerRb.AddForce(Vector2.up * forcePush, ForceMode2D.Impulse);
+
+                Destroy(gameObject, 0.3f);
+            }
+        }
     }
 }

@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 422314429471906561}
   - component: {fileID: 2233860406659292823}
   - component: {fileID: 3990771462489587134}
+  - component: {fileID: 5787448851972876908}
   - component: {fileID: 6073650833436022136}
   - component: {fileID: 5187151711223163763}
   m_Layer: 8
@@ -202,7 +203,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00038050115, y: -0.053649995}
+  m_Offset: {x: 0.004903756, y: -0.064770356}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -213,7 +214,52 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16247448, y: 0.21270001}
+  m_Size: {x: 0.15038319, y: 0.19045928}
+  m_EdgeRadius: 0
+--- !u!61 &5787448851972876908
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3082707776447476475}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0031344965, y: 0.062334098}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 0.32, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.13240413, y: 0.017889649}
   m_EdgeRadius: 0
 --- !u!114 &6073650833436022136
 MonoBehaviour:
@@ -246,6 +292,7 @@ MonoBehaviour:
   wallDetectionRange: 0.5
   facingRight: 0
   isHolding: 0
+  forcePush: 25
 --- !u!114 &5187151711223163763
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 10f;
     private bool isGrounded;
     private bool jumpRequest;
-    public bool isJumping;
 
     public Transform groundCheck;
     public float groundCheckDistance = 0.1f;
@@ -23,14 +22,13 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
-    // Attack
-    public GameObject bulletPrefab;
-    public Transform bulletPosRight;
-    public Transform bulletPosLeft;
-    public float attackWait = 0.5f;
-
     public Transform lightPos;
     private Vector2 lightDefaultPos;
+
+    private bool isKnockback;
+    public float knockbackDuration = 0.2f;
+    public float knockbackForce = 45f;
+    public float knockbackUpForce = 0.6f;
 
     void Awake()
     {
@@ -50,21 +48,6 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded)
             jumpRequest = true;
-
-        if (Input.GetButtonDown("Fire1") && !isJumping)
-        {
-            bool isStandingStill = Mathf.Abs(movement.x) < 0.01f;
-
-            if (isStandingStill)
-            {
-                canMove = false;
-                StartCoroutine(WaitTime());
-            }
-
-            animator.SetTrigger(movement.x == 0f ? "attack" : "runAttack");
-
-            FireBullet();
-        }
 
         GroundControl();
         JumpAnim();
@@ -128,21 +111,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void FireBullet()
-    {
-        Transform spawnPos = spriteRenderer.flipX ? bulletPosLeft : bulletPosRight;
-
-        var bullet = Instantiate(bulletPrefab, spawnPos.position, Quaternion.identity);
-
-        bullet.GetComponent<Bullet>().goLeft = spriteRenderer.flipX;
-    }
-
-    IEnumerator WaitTime()
-    {
-        yield return new WaitForSeconds(attackWait);
-        canMove = true;
-    }
-
     private void GroundControl()
     {
         RaycastHit2D hit = Physics2D.Raycast(
@@ -157,12 +125,39 @@ public class PlayerController : MonoBehaviour
         if (hit.collider != null)
         {
             isGrounded = true;
-            isJumping = false;
         }
         else
         {
             isGrounded = false;
-            isJumping = true;
+        }
+    }
+
+    IEnumerator ApplyKnockback(Vector2 knockbackDir)
+    {
+        isKnockback = true;
+        canMove = false;
+
+        rb.velocity = Vector2.zero;
+        rb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(knockbackDuration);
+
+        canMove = true;
+        isKnockback = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && !isKnockback)
+        {
+            Debug.Log("Player collided with Enemy, applying knockback.");
+
+            Vector2 knockbackDir =
+                (transform.position - collision.transform.position).normalized;
+
+            knockbackDir.y = knockbackUpForce;
+            knockbackDir.Normalize();
+
+            StartCoroutine(ApplyKnockback(knockbackDir));
         }
     }
 }

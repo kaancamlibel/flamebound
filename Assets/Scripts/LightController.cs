@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LightController : MonoBehaviour
@@ -11,27 +12,27 @@ public class LightController : MonoBehaviour
     public bool isLocked = true;
 
     public BoxCollider2D boundsCollider;
+    public CircleCollider2D circleCollider2D;
     private Vector2 minBounds;
     private Vector2 maxBounds;
+    public float lockMargin = 0.5f;
 
     public float radius = 3f;
     public float force = 10f;
+    private bool canForce = true;
+    private float currentForce;
     public LayerMask affectedLayers;
 
-    public BoxCollider2D BoxCollider2D;
-
     private bool isCollidingWithPlayer;
-    private PlayerController playerController;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerController = FindObjectOfType<PlayerController>();
     }
 
     private void Start()
     {
-        // Initial calculation of bounds
+        currentForce = force;
     }
 
     private void Update()
@@ -41,9 +42,10 @@ public class LightController : MonoBehaviour
             RequestLock();
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && canForce)
         {
             ApplyForce();
+            StartCoroutine(ForceDelay());
         }
 
         movement.x = Input.GetAxisRaw("LightHorizontal");
@@ -58,6 +60,7 @@ public class LightController : MonoBehaviour
     private void FixedUpdate()
     {
         CalculateBounds();
+        CheckOutOfBounds();
 
         if (isLocked)
         {
@@ -75,13 +78,13 @@ public class LightController : MonoBehaviour
     {
         isLocked = true;
         isCollidingWithPlayer = false;
-        BoxCollider2D.isTrigger = true;
+        circleCollider2D.isTrigger = true;
     }
 
     void RequestFree()
     {
         isLocked = false;
-        BoxCollider2D.isTrigger = false;
+        circleCollider2D.isTrigger = false;
     }
 
     void FollowPlayer()
@@ -98,12 +101,10 @@ public class LightController : MonoBehaviour
     void FreeMove()
     {
         if (isCollidingWithPlayer) return;
-        if (playerController == null) return;
-        if (playerController.isJumping) return;
 
         rb.velocity = movement.normalized * lightSpeed;
 
-        ClampPosition();
+        // ClampPosition();
     }
 
     void CalculateBounds()
@@ -123,7 +124,23 @@ public class LightController : MonoBehaviour
         transform.position = pos;
     }
 
-    public void ApplyForce()
+    void CheckOutOfBounds()
+    {
+        Vector2 pos = rb.position;
+
+        bool outOfBounds =
+            pos.x < minBounds.x - lockMargin ||
+            pos.x > maxBounds.x + lockMargin ||
+            pos.y < minBounds.y - lockMargin ||
+            pos.y > maxBounds.y + lockMargin;
+
+        if (outOfBounds && !isLocked)
+        {
+            RequestLock();
+        }
+    }
+
+    void ApplyForce()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position,
@@ -137,8 +154,15 @@ public class LightController : MonoBehaviour
             if (rb == null) continue;
 
             Vector2 direction = (rb.position - (Vector2)transform.position).normalized;
-            rb.AddForce(direction * force, ForceMode2D.Impulse);
+            rb.AddForce(direction * currentForce, ForceMode2D.Impulse);
         }
+    }
+
+    IEnumerator ForceDelay()
+    {
+        canForce = false;
+        yield return new WaitForSeconds(3f);
+        canForce = true;
     }
 
     void ApplyLockPhysics()
@@ -173,6 +197,9 @@ public class LightController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isCollidingWithPlayer = true;
+
+            currentForce = force * 2;
+            ApplyForce();
         }
     }
 
@@ -181,6 +208,8 @@ public class LightController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isCollidingWithPlayer = false;
+
+            currentForce = force;
         }
     }
 }

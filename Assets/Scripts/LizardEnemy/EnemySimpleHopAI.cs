@@ -28,6 +28,7 @@ public class EnemySimpleHopAI : MonoBehaviour
     public bool isHolding;
 
     private EnemyHopAttack hopAttack;
+    public float forcePush = 5f;
 
     void Awake()
     {
@@ -131,4 +132,22 @@ public class EnemySimpleHopAI : MonoBehaviour
         scale.x *= -1;
         transform.localScale = scale;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Rigidbody2D playerRb = collision.GetComponent<Rigidbody2D>();
+
+            if (playerRb != null)
+            {
+                Debug.Log("Lizard Enemy collided with Player, applying force.");
+
+                playerRb.AddForce(Vector2.up * forcePush, ForceMode2D.Impulse);
+
+                Destroy(gameObject, 0.3f);
+            }
+        }
+    }
+
 }
