@@ -144,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6907322060284070409
 Transform:
   m_ObjectHideFlags: 0
@@ -317,10 +317,13 @@ MonoBehaviour:
   jumpForce: 17
   groundCheck: {fileID: 399090802885739097}
   groundCheckDistance: 0.2
-  bulletPrefab: {fileID: 2048887176920182093, guid: 69dceb2d70f34934aa77ab99fde41e3f, type: 3}
-  bulletPosRight: {fileID: 1269878517326587684}
-  bulletPosLeft: {fileID: 7114564064060868262}
-  attackWait: 0.3
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  lightPos: {fileID: 0}
+  knockbackDuration: 0.2
+  knockbackForce: 45
+  knockbackUpForce: 0.6
 --- !u!1 &5398263375638382645
 GameObject:
   m_ObjectHideFlags: 0

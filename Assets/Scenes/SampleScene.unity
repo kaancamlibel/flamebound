@@ -1071,6 +1071,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lizard
       objectReference: {fileID: 0}
+    - target: {fileID: 3082707776447476475, guid: 7b9004dcb6f75cb4dbd423434242aeea, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7036058629314762521, guid: 7b9004dcb6f75cb4dbd423434242aeea, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.58
@@ -1329,6 +1333,10 @@ PrefabInstance:
     - target: {fileID: 1917967606098787920, guid: d3fcdb91402c9524ebacfb5fcf0d6b6c, type: 3}
       propertyPath: m_Name
       value: Skeleton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917967606098787920, guid: d3fcdb91402c9524ebacfb5fcf0d6b6c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8881186466375708221, guid: d3fcdb91402c9524ebacfb5fcf0d6b6c, type: 3}
       propertyPath: m_LocalPosition.x
