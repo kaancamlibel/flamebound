@@ -311,7 +311,7 @@ MonoBehaviour:
     m_Bits: 128
   isAttacking: 0
   speed: 5
-  fireBall: {fileID: 8154926024626989640, guid: 794c85a7d245b33428629b13fc1fecf3, type: 3}
+  fireBall: {fileID: 1119932982148928718, guid: 648a0e63924575c408b8c55221a280b3, type: 3}
 --- !u!1 &4349365852560052628
 GameObject:
   m_ObjectHideFlags: 0
