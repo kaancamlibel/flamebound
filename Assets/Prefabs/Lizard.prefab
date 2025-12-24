@@ -292,7 +292,7 @@ MonoBehaviour:
   wallDetectionRange: 0.5
   facingRight: 0
   isHolding: 0
-  forcePush: 25
+  forcePush: 50
 --- !u!114 &5187151711223163763
 MonoBehaviour:
   m_ObjectHideFlags: 0

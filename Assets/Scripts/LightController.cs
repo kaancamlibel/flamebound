@@ -24,6 +24,7 @@ public class LightController : MonoBehaviour
     public LayerMask affectedLayers;
 
     private bool isCollidingWithPlayer;
+    private float freeMoveTimer;
 
     private void Awake()
     {
@@ -54,6 +55,16 @@ public class LightController : MonoBehaviour
         if (movement != Vector2.zero)
         {
             RequestFree();
+            freeMoveTimer = 2f; // Süreyi her hareketle tazele
+        }
+        else if (!isLocked)
+        {
+            // Hareket yoksa süreyi düþür
+            freeMoveTimer -= Time.deltaTime;
+            if (freeMoveTimer <= 0)
+            {
+                RequestLock();
+            }
         }
     }
 
@@ -103,8 +114,6 @@ public class LightController : MonoBehaviour
         if (isCollidingWithPlayer) return;
 
         rb.velocity = movement.normalized * lightSpeed;
-
-        // ClampPosition();
     }
 
     void CalculateBounds()
@@ -112,16 +121,6 @@ public class LightController : MonoBehaviour
         Bounds b = boundsCollider.bounds;
         minBounds = b.min;
         maxBounds = b.max;
-    }
-
-    void ClampPosition()
-    {
-        Vector3 pos = transform.position; 
-
-        pos.x = Mathf.Clamp(pos.x, minBounds.x, maxBounds.x); 
-        pos.y = Mathf.Clamp(pos.y, minBounds.y, maxBounds.y); 
-
-        transform.position = pos;
     }
 
     void CheckOutOfBounds()
@@ -165,6 +164,12 @@ public class LightController : MonoBehaviour
         canForce = true;
     }
 
+    IEnumerator LockAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        RequestLock();
+    }
+
     void ApplyLockPhysics()
     {
         rb.velocity = Vector2.zero;
@@ -200,6 +205,8 @@ public class LightController : MonoBehaviour
 
             currentForce = force * 2;
             ApplyForce();
+
+            StartCoroutine(LockAfterDelay(0.3f));
         }
     }
 

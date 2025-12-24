@@ -256,14 +256,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1a387c5ae09be04999dde1954e875d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightSpeed: 7
+  lightSpeed: 9
   playerLocation: {fileID: 0}
   isLocked: 1
   boundsCollider: {fileID: 0}
   circleCollider2D: {fileID: 5356958121179771510}
   lockMargin: 0.5
   radius: 3
-  force: 10
+  force: 19
   affectedLayers:
     serializedVersion: 2
     m_Bits: 640

@@ -138,7 +138,10 @@ public class PlayerController : MonoBehaviour
         canMove = false;
 
         rb.velocity = Vector2.zero;
-        rb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
+
+        Vector2 force = new Vector2(knockbackDir.x * knockbackForce, 0);
+
+        rb.AddForce(force, ForceMode2D.Impulse);
         yield return new WaitForSeconds(knockbackDuration);
 
         canMove = true;
@@ -149,13 +152,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !isKnockback)
         {
-            Debug.Log("Player collided with Enemy, applying knockback.");
-
-            Vector2 knockbackDir =
-                (transform.position - collision.transform.position).normalized;
-
-            knockbackDir.y = knockbackUpForce;
-            knockbackDir.Normalize();
+            float dirX = transform.position.x - collision.transform.position.x;
+            Vector2 knockbackDir = new Vector2(Mathf.Sign(dirX), 0);
 
             StartCoroutine(ApplyKnockback(knockbackDir));
         }
