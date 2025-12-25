@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - LightKey
   - Boss
+  - CursedManager
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - ApplyForce
   - LightGround
   - Boss
-  - 
+  - IWall
   - 
   - 
   - 

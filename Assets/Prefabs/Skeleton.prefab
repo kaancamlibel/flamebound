@@ -287,7 +287,7 @@ MonoBehaviour:
   wallCheck: {fileID: 4177600088724911301}
   patrolStopInterval: 10
   stopDuration: 3
-  forcePush: 50
+  forcePush: 60
 --- !u!1 &4472389790796167492
 GameObject:
   m_ObjectHideFlags: 0

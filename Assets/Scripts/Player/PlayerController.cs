@@ -20,26 +20,19 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
 
     private Animator animator;
-    private SpriteRenderer spriteRenderer;
 
     public Transform lightPos;
-    private Vector2 lightDefaultPos;
 
     private bool isKnockback;
     public float knockbackDuration = 0.2f;
     public float knockbackForce = 45f;
-    public float knockbackUpForce = 0.6f;
+
+    public Vector2 boxSize = new Vector2(0.5f, 0.1f); // Kutunun geniþliði ve yüksekliði
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
-    void Start()
-    {
-        lightDefaultPos = lightPos.localPosition;
     }
 
     private void Update()
@@ -72,13 +65,11 @@ public class PlayerController : MonoBehaviour
 
         if (movement.x > 0)
         {
-            spriteRenderer.flipX = false;
-            lightPos.localPosition = lightDefaultPos;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else if (movement.x < 0)
         {
-            spriteRenderer.flipX = true;
-            lightPos.localPosition = new Vector2(-lightDefaultPos.x, lightDefaultPos.y);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
 
         animator.SetFloat("isRunning", Mathf.Abs(movement.x));
@@ -113,23 +104,27 @@ public class PlayerController : MonoBehaviour
 
     private void GroundControl()
     {
-        RaycastHit2D hit = Physics2D.Raycast(
+        RaycastHit2D hit = Physics2D.BoxCast(
             groundCheck.position,
+            boxSize,
+            0f,
             Vector2.down,
             groundCheckDistance,
             groundLayer
         );
 
-        Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckDistance, Color.blue);
+        isGrounded = hit.collider != null;
+    }
 
-        if (hit.collider != null)
-        {
-            isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
-        }
+    private void OnDrawGizmos()
+    {
+        if (groundCheck == null) return;
+
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+
+        Vector3 center = groundCheck.position + (Vector3.down * groundCheckDistance * 0.5f);
+        Vector3 size = new Vector3(boxSize.x, groundCheckDistance, 1f);
+        Gizmos.DrawWireCube(center, size);
     }
 
     IEnumerator ApplyKnockback(Vector2 knockbackDir)
@@ -152,6 +147,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !isKnockback)
         {
+            Debug.Log("Player take damaged!");
+
             float dirX = transform.position.x - collision.transform.position.x;
             Vector2 knockbackDir = new Vector2(Mathf.Sign(dirX), 0);
 

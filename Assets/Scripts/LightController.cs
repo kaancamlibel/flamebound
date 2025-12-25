@@ -26,6 +26,8 @@ public class LightController : MonoBehaviour
     private bool isCollidingWithPlayer;
     private float freeMoveTimer;
 
+    public bool isKidnapped = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -38,6 +40,8 @@ public class LightController : MonoBehaviour
 
     private void Update()
     {
+        if (isKidnapped) return; // Kaçýrýlma varsa hiçbir inputu okuma
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             RequestLock();
@@ -66,11 +70,15 @@ public class LightController : MonoBehaviour
                 RequestLock();
             }
         }
+
     }
 
     private void FixedUpdate()
     {
         CalculateBounds();
+
+        if (isKidnapped) return;
+
         CheckOutOfBounds();
 
         if (isLocked)
@@ -191,6 +199,31 @@ public class LightController : MonoBehaviour
         }
     }
 
+    // Bu fonksiyon çaðrýldýðýnda ýþýk artýk oyuncuyu veya inputu dinlemez
+    public void StartKidnapping(Vector2 targetPos, float moveSpeed)
+    {
+        isKidnapped = true; // Diðer tüm mantýðý devre dýþý býrak
+        isLocked = false; // Takibi býrak
+        StopAllCoroutines(); // Mevcut FreeMove geri sayýmlarýný durdur
+        StartCoroutine(MoveToFinalPoint(targetPos, moveSpeed));
+    }
+
+    IEnumerator MoveToFinalPoint(Vector2 target, float speed)
+    {
+        // Iþýk hedef savaþ alanýna varana kadar hareket etsin
+        while (Vector2.Distance(transform.position, target) > 0.1f)
+        {
+            // Rigidbody üzerinden hareket ettirerek fizik kurallarýna (bounds vb.) uymasýný saðla
+            rb.MovePosition(Vector2.MoveTowards(rb.position, target, speed * Time.deltaTime));
+            yield return null;
+        }
+
+        // Hedefe vardýðýnda orada çakýlý kalmasý için hýzý sýfýrla ve kilitle
+        rb.velocity = Vector2.zero;
+        isLocked = true; // Oyuncuya kilitlenmesi için deðil, hareketin durmasý için
+                         // Not: FollowPlayer metoduna "if(kidnapped) return;" ekleyerek takibi tamamen kapatabilirsin.
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
@@ -199,6 +232,8 @@ public class LightController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (isKidnapped) return; // Kaçýrýlan ýþýða çarpýnca kilitlenme olmasýn
+
         if (collision.gameObject.CompareTag("Player"))
         {
             isCollidingWithPlayer = true;
