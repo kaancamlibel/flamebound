@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5629563574367732541}
   - component: {fileID: 5108205723572675861}
   - component: {fileID: 9132106116801070306}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WormFireVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 2
   m_CollisionDetection: 0
   m_Constraints: 6
 --- !u!58 &5108205723572675861

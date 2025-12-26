@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -2367343908668150774}
   - component: {fileID: -2906834324194242835}
   - component: {fileID: 9078649107882076897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SkullTrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

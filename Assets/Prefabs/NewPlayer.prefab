@@ -442,7 +442,7 @@ MonoBehaviour:
     m_Bits: 1600
   lightPos: {fileID: 4726506293192146814}
   knockbackDuration: 0.2
-  knockbackForce: 30
+  knockbackForce: 15
   boxSize: {x: 0.5, y: 0.1}
 --- !u!1 &8589186946486361090
 GameObject:

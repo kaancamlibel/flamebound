@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 656312799418503634}
   - component: {fileID: 9110255225331478078}
   - component: {fileID: -3965875868397730043}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FireTornado
-  m_TagString: Untagged
+  m_TagString: Destroyable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,7 +132,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 2
   m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!61 &-3965875868397730043

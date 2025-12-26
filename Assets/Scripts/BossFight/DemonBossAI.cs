@@ -22,6 +22,7 @@ public class DemonBossAI : MonoBehaviour
     private float lastRotationY;
 
     private Animator animator;
+    private PlayerController playerController;
 
     void Awake()
     {
@@ -71,6 +72,20 @@ public class DemonBossAI : MonoBehaviour
         if (hit != null)
         {
             StartCoroutine(PerformAttack());
+        }
+    }
+
+    void DealDamage()
+    {
+        if (playerController == null)
+        {
+            playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        }
+
+        if (playerController != null)
+        {
+            playerController.health--;
+            Debug.Log("Boss oyuncuya vurdu! Kalan Can: " + playerController.health);
         }
     }
 

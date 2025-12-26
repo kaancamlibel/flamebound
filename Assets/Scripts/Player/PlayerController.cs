@@ -29,12 +29,21 @@ public class PlayerController : MonoBehaviour
     public float knockbackDuration = 0.2f;
     public float knockbackForce = 45f;
 
+    public int health = 3;
+    public int enemyLayer;
+    private bool instantKill = false;
+
     public Vector2 boxSize = new Vector2(0.5f, 0.1f);
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        enemyLayer = LayerMask.NameToLayer("Enemy");
     }
 
     private void Update()
@@ -46,6 +55,7 @@ public class PlayerController : MonoBehaviour
 
         GroundControl();
         JumpAnim();
+        TakeDamage();
     }
 
     private void FixedUpdate()
@@ -145,13 +155,52 @@ public class PlayerController : MonoBehaviour
         isKnockback = false;
     }
 
+    public void TakeDamage()
+    {
+        if (health == 0)
+        {
+            Destroy(gameObject);
+        }
+
+        if (instantKill == true)
+        {
+            health = 0;
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !isKnockback)
-        {
-            Debug.Log("Player take damaged!");
+        HandleDamage(collision.gameObject);
 
-            float dirX = transform.position.x - collision.transform.position.x;
+        if (collision.collider.CompareTag("InstantKill"))
+        {
+            instantKill = true;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("WeakPoint"))
+        {
+            return;
+        }
+
+        HandleDamage(collision.gameObject);
+
+        if (collision.CompareTag("Destroyable"))
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void HandleDamage(GameObject attacker)
+    {
+        if (attacker.layer == enemyLayer && !isKnockback)
+        {
+            health--;
+            Debug.Log("Current health: " + health);
+
+            float dirX = transform.position.x - attacker.transform.position.x;
             Vector2 knockbackDir = new Vector2(Mathf.Sign(dirX), 0);
 
             StartCoroutine(ApplyKnockback(knockbackDir));

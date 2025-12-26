@@ -9,6 +9,9 @@ TagManager:
   - LightKey
   - Boss
   - CursedManager
+  - Destroyable
+  - WeakPoint
+  - InstantKill
   layers:
   - Default
   - TransparentFX
@@ -23,7 +26,7 @@ TagManager:
   - LightGround
   - Boss
   - IWall
-  - 
+  - LightRange
   - 
   - 
   - 
