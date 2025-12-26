@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class LightController : MonoBehaviour
 {
+    [Header("Movement controls")]
     public float lightSpeed = 5f;
     private Vector2 movement;
     private Rigidbody2D rb;
 
-    public Transform playerLocation;
-    public bool isLocked = true;
-
+    [Header("Bounds controls")]
     public BoxCollider2D boundsCollider;
     public CircleCollider2D circleCollider2D;
     private Vector2 minBounds;
     private Vector2 maxBounds;
     public float lockMargin = 0.5f;
 
+    public Transform playerLocation;
+    public bool isLocked = true;
+
+    [Header("Force controls")]
     public float radius = 3f;
     public float force = 10f;
     private bool canForce = true;
@@ -40,7 +43,7 @@ public class LightController : MonoBehaviour
 
     private void Update()
     {
-        if (isKidnapped) return; // Kaçýrýlma varsa hiçbir inputu okuma
+        if (isKidnapped) return;
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -59,11 +62,10 @@ public class LightController : MonoBehaviour
         if (movement != Vector2.zero)
         {
             RequestFree();
-            freeMoveTimer = 2f; // Süreyi her hareketle tazele
+            freeMoveTimer = 2f; 
         }
         else if (!isLocked)
         {
-            // Hareket yoksa süreyi düþür
             freeMoveTimer -= Time.deltaTime;
             if (freeMoveTimer <= 0)
             {
@@ -199,29 +201,24 @@ public class LightController : MonoBehaviour
         }
     }
 
-    // Bu fonksiyon çaðrýldýðýnda ýþýk artýk oyuncuyu veya inputu dinlemez
     public void StartKidnapping(Vector2 targetPos, float moveSpeed)
     {
-        isKidnapped = true; // Diðer tüm mantýðý devre dýþý býrak
-        isLocked = false; // Takibi býrak
-        StopAllCoroutines(); // Mevcut FreeMove geri sayýmlarýný durdur
+        isKidnapped = true; 
+        isLocked = false;
+        StopAllCoroutines(); 
         StartCoroutine(MoveToFinalPoint(targetPos, moveSpeed));
     }
 
     IEnumerator MoveToFinalPoint(Vector2 target, float speed)
     {
-        // Iþýk hedef savaþ alanýna varana kadar hareket etsin
         while (Vector2.Distance(transform.position, target) > 0.1f)
         {
-            // Rigidbody üzerinden hareket ettirerek fizik kurallarýna (bounds vb.) uymasýný saðla
             rb.MovePosition(Vector2.MoveTowards(rb.position, target, speed * Time.deltaTime));
             yield return null;
         }
 
-        // Hedefe vardýðýnda orada çakýlý kalmasý için hýzý sýfýrla ve kilitle
         rb.velocity = Vector2.zero;
-        isLocked = true; // Oyuncuya kilitlenmesi için deðil, hareketin durmasý için
-                         // Not: FollowPlayer metoduna "if(kidnapped) return;" ekleyerek takibi tamamen kapatabilirsin.
+        isLocked = true; 
     }
 
     private void OnDrawGizmosSelected()
@@ -232,7 +229,7 @@ public class LightController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isKidnapped) return; // Kaçýrýlan ýþýða çarpýnca kilitlenme olmasýn
+        if (isKidnapped) return; 
 
         if (collision.gameObject.CompareTag("Player"))
         {

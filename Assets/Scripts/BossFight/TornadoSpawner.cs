@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class TornadoSpawner : MonoBehaviour
 {
+    [Header("///")]
     public Transform spawnerA;
     public Transform spawnerB;
     public GameObject tornadoPrefab;
 
+    [Header("///")]
     public float tornadoSpeed = 5f; 
     public float spawnInterval = 10f;
 

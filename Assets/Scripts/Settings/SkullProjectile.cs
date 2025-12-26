@@ -3,25 +3,23 @@ using UnityEngine;
 
 public class SkullProjectile : MonoBehaviour
 {
+    [Header("///")]
     public GameObject skullPrefab;
     public float waitTime = 1.0f;
     public float spawnTime = 1.0f;
     public Transform spawnPoint;
     public float totalDuration = 5.0f;
 
-    private Coroutine spawnCoroutine; // Coroutine'i takip etmek için
+    private Coroutine spawnCoroutine;
     public GameObject cursedVFX;
 
-    // OnEnable, obje her SetActive(true) olduðunda otomatik çalýþýr
     private void OnEnable()
     {
-        // Eðer içeride çalýþan eski bir coroutine kalmýþsa (önlem olarak) durdur
         if (spawnCoroutine != null)
         {
             StopCoroutine(spawnCoroutine);
         }
 
-        // Yeni döngüyü baþlat
         spawnCoroutine = StartCoroutine(SpawnRoutine());
     }
 
@@ -47,12 +45,10 @@ public class SkullProjectile : MonoBehaviour
 
         Debug.Log("Lanet süresi bitti, obje kapatýlýyor.");
 
-        // Atýþ bittiðinde objeyi kapat
         gameObject.SetActive(false);
         cursedVFX.SetActive(false);
     }
 
-    // Obje SetActive(false) olduðunda coroutine referansýný temizle
     private void OnDisable()
     {
         if (spawnCoroutine != null)

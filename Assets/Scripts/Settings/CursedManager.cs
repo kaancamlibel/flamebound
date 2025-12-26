@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class CursedManager : MonoBehaviour
 {
-    // Singleton yapýsý: Her yerden kolayca eriþmek için
     public static CursedManager Instance;
 
-    public GameObject cursedControl; // Aktif edilecek obje
+    [Header("///")]
+    public GameObject cursedControl;
     public GameObject cursedVFX;
 
     private void Awake()
     {
-        // Bu scriptin her yerden "CursedManager.Instance" diye çaðrýlmasýný saðlar
         if (Instance == null) Instance = this;
     }
 

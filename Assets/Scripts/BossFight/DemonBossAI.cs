@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class DemonBossAI : MonoBehaviour
 {
+    [Header("Main Settings")]
     public Transform player;
     public float speed = 2f;
     public Transform attackPoint;
@@ -10,6 +11,7 @@ public class DemonBossAI : MonoBehaviour
     public float attackRange = 1.5f;
     public float attackCooldown = 2f;
 
+    [Header("Prefabs")]
     private bool canAttack = true; 
     private bool isAttacking = false;
     public Transform firePoint;

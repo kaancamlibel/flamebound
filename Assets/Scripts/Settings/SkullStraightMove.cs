@@ -12,7 +12,6 @@ public class SkullStraightMove : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        // Sahneyi kalabalýklaþtýrmamak için 3 saniye sonra kendini yok etsin
         Destroy(gameObject, lifetime);
     }
 
@@ -31,7 +30,6 @@ public class SkullStraightMove : MonoBehaviour
             animator.SetTrigger("Burst");
             isStopped = true;
 
-            // Oyuncuya çarparsa yok olsun
             Destroy(gameObject,0.2f);
         }
     }

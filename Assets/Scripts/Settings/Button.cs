@@ -5,6 +5,7 @@ public class Button : MonoBehaviour
     public GameObject buttonOff, buttonOn;
     public Transform wall;
 
+    [Header("///")]
     public Vector3 wallOpenOffset = new Vector3(0, 5, 0);
     public float moveSpeed = 3f;
 

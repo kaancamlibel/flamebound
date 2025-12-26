@@ -3,23 +3,22 @@ using System.Collections;
 
 public class SpinSlime : MonoBehaviour
 {
-    [Header("Hedef Noktalar")]
+    [Header("Points")]
     public Transform pointA;
     public Transform pointB;
 
-    [Header("Hareket Ayarlarý")]
+    [Header("Movement Settings")]
     public float speed = 10f;
-    public float waitTime = 1f; // Bekleme süresi (1 saniye)
+    public float waitTime = 1f;
 
     private Transform currentTarget;
     private Animator animator;
-    private bool isWaiting = false; // Bekleme durumunu kontrol eder
+    private bool isWaiting = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
 
-        // Baþlangýçta A noktasýna gitmeye baþla
         currentTarget = pointA;
 
         if (pointA == null || pointB == null)
@@ -28,20 +27,16 @@ public class SpinSlime : MonoBehaviour
         }
         else
         {
-            // Ýlk harekete baþlarken animasyonu aç
             animator.SetBool("isSpinning", true);
         }
     }
 
     void Update()
     {
-        // Eðer bekleme modundaysak veya hedef yoksa hareket etme
         if (isWaiting || currentTarget == null) return;
 
-        // Hedefe doðru hareket et
         transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, speed * Time.deltaTime);
 
-        // Hedefe ulaþtý mý kontrol et
         if (Vector2.Distance(transform.position, currentTarget.position) < 0.01f)
         {
             StartCoroutine(WaitAtPoint());
@@ -51,21 +46,20 @@ public class SpinSlime : MonoBehaviour
     IEnumerator WaitAtPoint()
     {
         isWaiting = true;
-        animator.SetBool("isSpinning", false); // Beklerken dönmeyi durdur
+        animator.SetBool("isSpinning", false); 
 
-        yield return new WaitForSeconds(waitTime); // 1 saniye bekle
+        yield return new WaitForSeconds(waitTime); 
 
-        SwitchTarget(); // Hedefi deðiþtir
+        SwitchTarget(); 
 
         isWaiting = false;
-        animator.SetBool("isSpinning", true); // Tekrar harekete geçerken dönmeyi baþlat
+        animator.SetBool("isSpinning", true); 
     }
 
     void SwitchTarget()
     {
         currentTarget = (currentTarget == pointA) ? pointB : pointA;
 
-        // Yönü döndür (X ekseninde)
         Vector3 scaler = transform.localScale;
         if (currentTarget.position.x > transform.position.x)
         {

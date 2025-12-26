@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemySimpleHopAI : MonoBehaviour
 {
+    [Header("Some values")]
     public Sprite[] frames;
     public float frameRate = 0.1f;
     public int jumpFrameIndex = 2;
@@ -12,14 +13,17 @@ public class EnemySimpleHopAI : MonoBehaviour
     public float jumpForce = 8f;
     public float moveForward = 2f;
 
+    [Header("Ground Settings")]
     public Transform groundCheck;
     public float detectionRange = 0.5f;
     public LayerMask groundLayer;
 
+    [Header("Wall Settings")]
     public Transform wallCheck;
     public float wallDetectionRange = 0.5f;
     public bool facingRight;
 
+    [Header("///")]
     private SpriteRenderer sr;
     private Rigidbody2D rb;
 
@@ -115,7 +119,7 @@ public class EnemySimpleHopAI : MonoBehaviour
     {
         yield return new WaitForSeconds(frameWaitTime);
 
-        currentFrame = 0; // Reset to first frame after jump
+        currentFrame = 0;
         sr.sprite = frames[currentFrame];
 
         yield return new WaitForSeconds(holdDuration);

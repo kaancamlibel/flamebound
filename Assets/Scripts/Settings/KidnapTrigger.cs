@@ -3,6 +3,7 @@ using System.Collections;
 
 public class KidnapTrigger : MonoBehaviour
 {
+    [Header("Game Objects")]
     public LightController lightCtrl;
     public Transform finalBattlePoint;
     public float kidnapSpeed = 8f;
@@ -19,9 +20,9 @@ public class KidnapTrigger : MonoBehaviour
     public GameObject slimePrefab;
 
     [Header("Settings")]
-    public float waveInterval = 1f;      // Her dalga arasý bekleme
-    public float delayBetweenSpawns = 0.5f; // Düþmanlarýn tek tek doðmasý için ara bekleme
-    public float eventDuration = 30f;    // Savaþýn toplam kaç saniye süreceði
+    public float waveInterval = 1f;      
+    public float delayBetweenSpawns = 0.5f; 
+    public float eventDuration = 30f;    
 
     private bool hasTriggered = false;
 
@@ -43,40 +44,31 @@ public class KidnapTrigger : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("Iþýk ulaþtý! Savaþ baþlýyor...");
-
         slimePrefab.SetActive(true);
 
-        // Savaþ dalgalarýný baþlat
         StartCoroutine(SpawnWaves());
 
-        // Etkinliði bitirmek için geri sayýmý baþlat
         StartCoroutine(EndEventAfterTime());
     }
 
     IEnumerator SpawnWaves()
     {
-        // hasTriggered true olduðu sürece (veya süre bitene kadar) devam eder
         while (hasTriggered)
         {
-            // Düþmanlarý belli aralýklarla sýrayla doður (Daha doðal görünür)
             Instantiate(lizardPrefab, lizardPointB.position, Quaternion.identity);
             yield return new WaitForSeconds(delayBetweenSpawns);
 
             Instantiate(skeletonPrefab, skeletonPointA.position, Quaternion.identity);
             yield return new WaitForSeconds(delayBetweenSpawns);
 
-            // Dalga bitti, bir sonraki dalga için bekle
             yield return new WaitForSeconds(waveInterval);
         }
     }
 
     IEnumerator EndEventAfterTime()
     {
-        // Toplam süre kadar bekle
         yield return new WaitForSeconds(eventDuration);
 
-        // Savaþý durdur
         hasTriggered = false;
 
         voidEffect.SetActive(false);
@@ -84,8 +76,6 @@ public class KidnapTrigger : MonoBehaviour
         slimePrefab.SetActive(false);
 
         StopCoroutine(SpawnWaves());
-
-        Debug.Log("Savaþ bitti! Iþýk serbest kalýyor.");
 
         lightCtrl.isKidnapped = false;
     }

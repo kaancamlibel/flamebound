@@ -3,18 +3,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Speed of the player movement
+    [Header("Movement controls")]
     public float speed = 5f;
     private Vector2 movement;
     private bool canMove = true;
 
     private Rigidbody2D rb;
 
-    // Jump force
+    [Header("Jump controls")]
     public float jumpForce = 10f;
     private bool isGrounded;
     private bool jumpRequest;
 
+    [Header("Ground controls")]
     public Transform groundCheck;
     public float groundCheckDistance = 0.1f;
     public LayerMask groundLayer;
@@ -23,11 +24,12 @@ public class PlayerController : MonoBehaviour
 
     public Transform lightPos;
 
+    [Header("Take damage controls")]
     private bool isKnockback;
     public float knockbackDuration = 0.2f;
     public float knockbackForce = 45f;
 
-    public Vector2 boxSize = new Vector2(0.5f, 0.1f); // Kutunun geniþliði ve yüksekliði
+    public Vector2 boxSize = new Vector2(0.5f, 0.1f);
 
     void Awake()
     {

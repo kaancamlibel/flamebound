@@ -19,7 +19,6 @@ public class EnemyFlyAI : MonoBehaviour
             Vector2 direction = (player.position - transform.position).normalized;
             transform.Translate(direction * speed * Time.deltaTime);
 
-            // Flip sprite based on movement direction
             if (direction.x > 0)
                 spriteRenderer.flipX = true;
             else if (direction.x < 0)
@@ -31,13 +30,11 @@ public class EnemyFlyAI : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // CursedManager'a ulaþýp laneti baþlatmasýný söylüyoruz
             if (CursedManager.Instance != null)
             {
                 CursedManager.Instance.StartCurse();
             }
 
-            // Hayaleti yok et
             Destroy(gameObject, 0.3f);
         }
     }

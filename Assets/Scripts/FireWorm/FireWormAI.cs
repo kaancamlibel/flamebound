@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class FireWormAI : MonoBehaviour
 {
-    [Header("Yol Noktalarý")]
+    [Header("Points")]
     public Transform pointA;
     public Transform pointB;
 
-    [Header("Hareket Ayarlarý")]
+    [Header("Movement")]
     public float speed = 3f;
 
     private Transform currentTarget;
@@ -19,7 +19,6 @@ public class FireWormAI : MonoBehaviour
 
     void Start()
     {
-        // Ýlk hedef olarak A noktasýný belirle
         currentTarget = pointA;
 
         if (pointA == null || pointB == null)
@@ -32,10 +31,8 @@ public class FireWormAI : MonoBehaviour
     {
         if (currentTarget == null) return;
 
-        // Hedefe doðru ilerle
         transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, speed * Time.deltaTime);
 
-        // Hedefe ulaþtý mý kontrol et
         if (Vector2.Distance(transform.position, currentTarget.position) < 0.1f)
         {
             FlipAndChangeTarget();
@@ -44,7 +41,6 @@ public class FireWormAI : MonoBehaviour
 
     void FlipAndChangeTarget()
     {
-        // Hedefi deðiþtir
         if (currentTarget == pointA)
         {
             currentTarget = pointB;
@@ -54,19 +50,16 @@ public class FireWormAI : MonoBehaviour
             currentTarget = pointA;
         }
 
-        // Karakterin yüzünü döndür
-        // Hareket yönü saða doðru ise flipX false, sola doðru ise true (Sprite'ýna göre deðiþebilir)
         if (currentTarget.position.x > transform.position.x)
         {
-            spriteRenderer.flipX = false; // Saða bak
+            spriteRenderer.flipX = false; 
         }
         else
         {
-            spriteRenderer.flipX = true; // Sola bak
+            spriteRenderer.flipX = true; 
         }
     }
 
-    // Editörde rotayý görebilmek için
     private void OnDrawGizmos()
     {
         if (pointA != null && pointB != null)

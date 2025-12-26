@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class EnemyHopAttack : MonoBehaviour
 {
+    [Header("///")]
     public float detectionRange = 5f;
     public LayerMask playerLayer;
 
+    [Header("Main Settings")]
     public bool isAttacking;
     public float speed = 5f;
     bool isOnCooldown = false;
 
     private EnemySimpleHopAI hopAI;
 
+    [Header("///")]
     public GameObject fireBall;
     private Vector2 moveDir;
     private Animator animator;
@@ -23,11 +26,6 @@ public class EnemyHopAttack : MonoBehaviour
         animator = GetComponent<Animator>();
 
         animator.enabled = false;
-    }
-
-    private void Start()
-    {
-        // Initialize variables if needed
     }
 
     private void Update()
