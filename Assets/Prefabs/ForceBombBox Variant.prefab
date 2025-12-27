@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7501780937855564369
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1119499419712329721, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_Name
+      value: ForceBombBox Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505073863142447848, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_Mass
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505073863142447848, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_GravityScale
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505073863142447848, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -52.213654
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -81.39125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166160223156939054, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -5005547252272232068, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1119499419712329721, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1486018506078410791}
+  m_SourcePrefab: {fileID: 100100000, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+--- !u!1 &7463287902980074920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1119499419712329721, guid: 7e234a0bb4dc0074893e8821d47a801c, type: 3}
+  m_PrefabInstance: {fileID: 7501780937855564369}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1486018506078410791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7463287902980074920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f215bd4fb26c9794c9c83d00f2112c45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionVFX: {fileID: 7351693161849855509, guid: 8ab2a5e8f09f4654bbf2e1567adf4ca3, type: 3}
+  delayBeforeExplosion: 1.5
+  explosionRadius: 3
+  shakeIntensity: 0.1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128

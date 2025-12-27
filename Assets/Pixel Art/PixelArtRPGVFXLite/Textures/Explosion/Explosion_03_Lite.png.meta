@@ -152,10 +152,10 @@ TextureImporter:
       name: Explosion_03_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 28
         y: 320
-        width: 64
-        height: 64
+        width: 7
+        height: 4
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,12 +173,12 @@ TextureImporter:
       name: Explosion_03_1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 5
         y: 256
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 54
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5068959, y: 0.3944936}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -195,11 +195,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 194
+        width: 60
+        height: 35
+      alignment: 9
+      pivot: {x: 0.5031031, y: 0.37232885}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,12 +215,12 @@ TextureImporter:
       name: Explosion_03_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1
+        y: 133
+        width: 62
+        height: 39
+      alignment: 9
+      pivot: {x: 0.49699706, y: 0.38542333}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -237,11 +237,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 73
+        width: 63
+        height: 38
+      alignment: 9
+      pivot: {x: 0.50000006, y: 0.3726092}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,10 +257,10 @@ TextureImporter:
       name: Explosion_03_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 2
+        y: 17
+        width: 61
+        height: 35
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

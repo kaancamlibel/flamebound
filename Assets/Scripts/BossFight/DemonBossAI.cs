@@ -24,6 +24,10 @@ public class DemonBossAI : MonoBehaviour
     private Animator animator;
     private PlayerController playerController;
 
+    [Header("Boss Health")]
+    public int maxHealth = 3;
+    private int currentHealth;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -31,7 +35,12 @@ public class DemonBossAI : MonoBehaviour
 
     private void Start()
     {
+        GameObject p = GameObject.FindGameObjectWithTag("Player");
+        if (p != null) playerController = p.GetComponent<PlayerController>();
+
         StartCoroutine(FireballRoutine(3, 1f, 10));
+
+        currentHealth = maxHealth;
     }
 
     void Update()
@@ -77,16 +86,60 @@ public class DemonBossAI : MonoBehaviour
 
     void DealDamage()
     {
-        if (playerController == null)
-        {
-            playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        }
+        Collider2D hit = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
 
-        if (playerController != null)
+        if (hit != null)
         {
-            playerController.health--;
-            Debug.Log("Boss oyuncuya vurdu! Kalan Can: " + playerController.health);
+            PlayerController pc = hit.GetComponent<PlayerController>();
+            if (pc != null)
+            {
+                pc.health--;
+
+                StartCoroutine(HitStop(0.12f));
+
+                float dirX = pc.transform.position.x - transform.position.x;
+                Vector2 knockbackDir = new Vector2(Mathf.Sign(dirX), 0);
+
+                pc.StartCoroutine(pc.ApplyKnockback(knockbackDir));
+
+                Debug.Log("Boss vurdu ve oyuncu savruldu!");
+            }
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        Debug.Log("Boss Hasar Aldý! Kalan Can: " + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(HitFlash());
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Boss Öldü!");
+        Destroy(gameObject);
+    }
+
+    IEnumerator HitFlash()
+    {
+        GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    IEnumerator HitStop(float duration)
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(duration); 
+        Time.timeScale = 1f;
     }
 
     IEnumerator PerformAttack()

@@ -159,14 +159,21 @@ public class LightController : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            Rigidbody2D rb = hit.attachedRigidbody;
-            if (rb == null) continue;
+            Rigidbody2D rbHit = hit.attachedRigidbody;
+            if (rbHit == null) continue;
 
-            Vector2 direction = (rb.position - (Vector2)transform.position).normalized;
-            rb.AddForce(direction * currentForce, ForceMode2D.Impulse);
+            // 1. Fiziksel olarak it
+            Vector2 direction = (rbHit.position - (Vector2)transform.position).normalized;
+            rbHit.AddForce(direction * currentForce, ForceMode2D.Impulse);
+
+            // 2. ForceBomb scripti var mý bak ve tetikle
+            ForceBomb fBomb = hit.GetComponent<ForceBomb>();
+            if (fBomb != null)
+            {
+                fBomb.ExplodeByForce();
+            }
         }
     }
-
     IEnumerator ForceDelay()
     {
         canForce = false;

@@ -39,10 +39,19 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        PlayerPrefs.DeleteAll();
     }
 
     private void Start()
     {
+        if (PlayerPrefs.GetInt("HasCheckPoint", 0) == 0)
+        {
+            PlayerPrefs.SetFloat("CheckPointX", transform.position.x);
+            PlayerPrefs.SetFloat("CheckPointY", transform.position.y);
+        }
+
+
         enemyLayer = LayerMask.NameToLayer("Enemy");
     }
 
@@ -52,6 +61,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded)
             jumpRequest = true;
+
+        if (health <= 0)
+        {
+            Respawn();
+        }
 
         GroundControl();
         JumpAnim();
@@ -139,7 +153,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireCube(center, size);
     }
 
-    IEnumerator ApplyKnockback(Vector2 knockbackDir)
+    public IEnumerator ApplyKnockback(Vector2 knockbackDir)
     {
         isKnockback = true;
         canMove = false;
@@ -157,15 +171,47 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (health == 0)
+        if (health <= 0)
         {
-            Destroy(gameObject);
+            Respawn();
         }
 
         if (instantKill)
         {
             health = 0;
         }
+    }
+
+    public void Respawn()
+    {
+        instantKill = false;
+        float x, y;
+
+        if (PlayerPrefs.GetInt("HasCheckPoint", 0) == 1)
+        {
+            x = PlayerPrefs.GetFloat("CheckPointX");
+            y = PlayerPrefs.GetFloat("CheckPointY");
+        }
+        else
+        {
+            x = PlayerPrefs.GetFloat("CheckPointX");
+            y = PlayerPrefs.GetFloat("CheckPointY");
+
+            // Eðer Start'ta da bir sorun olursa diye varsayýlan bir deðer (opsiyonel)
+            // x = 0; y = 0; 
+        }
+
+        transform.position = new Vector3(x, y + 1.5f, 0);
+
+        rb.velocity = Vector2.zero;
+        rb.simulated = true;
+        rb.WakeUp();
+
+        health = 3;
+        canMove = true;
+        isKnockback = false;
+        Time.timeScale = 1f;
+        animator.Play("Idle");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
