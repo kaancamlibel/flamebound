@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (instantKill == true)
+        if (instantKill)
         {
             health = 0;
         }
