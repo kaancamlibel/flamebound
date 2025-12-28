@@ -149,6 +149,26 @@ public class LightController : MonoBehaviour
         }
     }
 
+    public void ResetLight()
+    {
+        StopAllCoroutines();
+
+        isKidnapped = false;
+        isLocked = true;
+        isCollidingWithPlayer = false;
+        circleCollider2D.isTrigger = true; 
+
+        if (playerLocation != null)
+        {
+            transform.position = playerLocation.position;
+        }
+
+        rb.velocity = Vector2.zero;
+        canForce = true; 
+
+        Debug.Log("Iþýk Oyuncuya Geri Döndü!");
+    }
+
     void ApplyForce()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(
@@ -162,11 +182,9 @@ public class LightController : MonoBehaviour
             Rigidbody2D rbHit = hit.attachedRigidbody;
             if (rbHit == null) continue;
 
-            // 1. Fiziksel olarak it
             Vector2 direction = (rbHit.position - (Vector2)transform.position).normalized;
             rbHit.AddForce(direction * currentForce, ForceMode2D.Impulse);
 
-            // 2. ForceBomb scripti var mý bak ve tetikle
             ForceBomb fBomb = hit.GetComponent<ForceBomb>();
             if (fBomb != null)
             {

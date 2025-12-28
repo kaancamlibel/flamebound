@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public int health = 3;
     public int enemyLayer;
     private bool instantKill = false;
+    private bool isDead = false;
 
     public Vector2 boxSize = new Vector2(0.5f, 0.1f);
 
@@ -57,19 +58,23 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
-            jumpRequest = true;
-
-        if (health <= 0)
+        if (!isDead) 
         {
-            Respawn();
+            movement.x = Input.GetAxisRaw("Horizontal");
+
+            if (Input.GetButtonDown("Jump") && isGrounded)
+                jumpRequest = true;
+
+            if (health <= 0)
+            {
+                StartCoroutine(DieAndRespawn());
+            }
+
+            if (instantKill) health = 0; 
         }
 
         GroundControl();
         JumpAnim();
-        TakeDamage();
     }
 
     private void FixedUpdate()
@@ -171,11 +176,6 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (health <= 0)
-        {
-            Respawn();
-        }
-
         if (instantKill)
         {
             health = 0;
@@ -185,33 +185,51 @@ public class PlayerController : MonoBehaviour
     public void Respawn()
     {
         instantKill = false;
-        float x, y;
+        isDead = false;
+        animator.SetBool("isDead", false);
 
-        if (PlayerPrefs.GetInt("HasCheckPoint", 0) == 1)
-        {
-            x = PlayerPrefs.GetFloat("CheckPointX");
-            y = PlayerPrefs.GetFloat("CheckPointY");
-        }
-        else
-        {
-            x = PlayerPrefs.GetFloat("CheckPointX");
-            y = PlayerPrefs.GetFloat("CheckPointY");
-
-            // Eðer Start'ta da bir sorun olursa diye varsayýlan bir deðer (opsiyonel)
-            // x = 0; y = 0; 
-        }
+        float x = PlayerPrefs.GetFloat("CheckPointX");
+        float y = PlayerPrefs.GetFloat("CheckPointY");
 
         transform.position = new Vector3(x, y + 1.5f, 0);
 
-        rb.velocity = Vector2.zero;
         rb.simulated = true;
+        rb.velocity = Vector2.zero;
         rb.WakeUp();
 
         health = 3;
         canMove = true;
         isKnockback = false;
-        Time.timeScale = 1f;
-        animator.Play("Idle");
+
+        KidnapTrigger kt = FindObjectOfType<KidnapTrigger>();
+        if (kt != null) kt.ResetTrigger();
+
+        LightController lc = FindObjectOfType<LightController>();
+        if (lc != null)
+        {
+            lc.ResetLight();
+        }
+
+        animator.ResetTrigger("Died");
+
+        animator.Play("Idle", - 1, 0f); 
+    }
+
+    IEnumerator DieAndRespawn()
+    {
+        isDead = true;
+        animator.SetBool("isDead", true);
+
+        canMove = false;
+        movement = Vector2.zero; 
+        rb.velocity = Vector2.zero;
+        rb.simulated = false; 
+
+        animator.SetTrigger("Died");
+
+        yield return new WaitForSeconds(0.5f);
+
+        Respawn();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

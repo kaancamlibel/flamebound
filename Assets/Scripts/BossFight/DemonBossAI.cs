@@ -27,6 +27,7 @@ public class DemonBossAI : MonoBehaviour
     [Header("Boss Health")]
     public int maxHealth = 3;
     private int currentHealth;
+    private bool isDead = false;
 
     void Awake()
     {
@@ -55,6 +56,8 @@ public class DemonBossAI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead) return;
+
         if (!isAttacking)
         {
             Vector2 targetPosition = new Vector2(player.position.x, transform.position.y);
@@ -110,7 +113,7 @@ public class DemonBossAI : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log("Boss Hasar Aldý! Kalan Can: " + currentHealth);
+        animator.SetTrigger("TakeDamage");
 
         if (currentHealth <= 0)
         {
@@ -124,8 +127,14 @@ public class DemonBossAI : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Boss Öldü!");
-        Destroy(gameObject);
+        isDead = true;
+        canAttack = false;
+        animator.SetBool("Died", true);
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null) rb.velocity = Vector2.zero;
+
+        Destroy(gameObject, 2f);
     }
 
     IEnumerator HitFlash()

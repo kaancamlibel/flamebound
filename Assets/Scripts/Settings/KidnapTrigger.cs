@@ -20,21 +20,41 @@ public class KidnapTrigger : MonoBehaviour
     public GameObject slimePrefab;
 
     [Header("Settings")]
-    public float waveInterval = 1f;      
-    public float delayBetweenSpawns = 0.5f; 
-    public float eventDuration = 30f;    
+    public float waveInterval = 1f;
+    public float delayBetweenSpawns = 0.5f;
+    public float eventDuration = 30f;
 
     private bool hasTriggered = false;
+    private Coroutine fightCoroutine; 
+    private Coroutine wavesCoroutine;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && !hasTriggered)
         {
-            hasTriggered = true;
-            voidEffect.SetActive(true);
-            lightCtrl.StartKidnapping(finalBattlePoint.position, kidnapSpeed);
-            StartCoroutine(WaitAndStartFight());
+            StartEvent();
         }
+    }
+
+    public void StartEvent()
+    {
+        hasTriggered = true;
+        voidEffect.SetActive(true);
+        voidWall.SetActive(true); 
+        lightCtrl.StartKidnapping(finalBattlePoint.position, kidnapSpeed);
+        fightCoroutine = StartCoroutine(WaitAndStartFight());
+    }
+
+    public void ResetTrigger()
+    {
+        StopAllCoroutines();
+        hasTriggered = false;
+
+        voidEffect.SetActive(false);
+        voidWall.SetActive(false);
+        if (slimePrefab != null) slimePrefab.SetActive(false);
+
+        Debug.Log("Kidnap Etkinliði Sýfýrlandý!");
     }
 
     IEnumerator WaitAndStartFight()
@@ -44,10 +64,8 @@ public class KidnapTrigger : MonoBehaviour
             yield return null;
         }
 
-        slimePrefab.SetActive(true);
-
-        StartCoroutine(SpawnWaves());
-
+        if (slimePrefab != null) slimePrefab.SetActive(true);
+        wavesCoroutine = StartCoroutine(SpawnWaves());
         StartCoroutine(EndEventAfterTime());
     }
 
@@ -68,15 +86,15 @@ public class KidnapTrigger : MonoBehaviour
     IEnumerator EndEventAfterTime()
     {
         yield return new WaitForSeconds(eventDuration);
+        FinishEvent();
+    }
 
+    void FinishEvent()
+    {
         hasTriggered = false;
-
         voidEffect.SetActive(false);
         voidWall.SetActive(false);
-        slimePrefab.SetActive(false);
-
-        StopCoroutine(SpawnWaves());
-
+        if (slimePrefab != null) slimePrefab.SetActive(false);
         lightCtrl.isKidnapped = false;
     }
 }
