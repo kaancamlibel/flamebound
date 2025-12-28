@@ -17,6 +17,8 @@ public class ForceBomb : MonoBehaviour
     private bool isExploded = false;
     private SpriteRenderer spriteRenderer;
 
+    public System.Action OnBombDestroyed;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -103,6 +105,11 @@ public class ForceBomb : MonoBehaviour
                 if (pc != null) pc.health = 0;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (OnBombDestroyed != null) OnBombDestroyed.Invoke();
     }
 
     private void OnDrawGizmosSelected()

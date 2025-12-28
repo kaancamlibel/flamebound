@@ -19,6 +19,8 @@ public class KidnapTrigger : MonoBehaviour
     public GameObject skeletonPrefab;
     public GameObject slimePrefab;
 
+    public GameObject fireHeartL;
+
     [Header("Settings")]
     public float waveInterval = 1f;
     public float delayBetweenSpawns = 0.5f;
@@ -92,6 +94,7 @@ public class KidnapTrigger : MonoBehaviour
     void FinishEvent()
     {
         hasTriggered = false;
+        fireHeartL.SetActive(true);
         voidEffect.SetActive(false);
         voidWall.SetActive(false);
         if (slimePrefab != null) slimePrefab.SetActive(false);

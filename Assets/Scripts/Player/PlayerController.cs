@@ -210,6 +210,12 @@ public class PlayerController : MonoBehaviour
             lc.ResetLight();
         }
 
+        BossFightControl bossCtrl = FindObjectOfType<BossFightControl>();
+        if (bossCtrl != null)
+        {
+            bossCtrl.ResetFight();
+        }
+
         animator.ResetTrigger("Died");
 
         animator.Play("Idle", - 1, 0f); 

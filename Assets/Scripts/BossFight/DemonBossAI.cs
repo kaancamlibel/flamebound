@@ -134,6 +134,12 @@ public class DemonBossAI : MonoBehaviour
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null) rb.velocity = Vector2.zero;
 
+        BossFightControl controller = FindObjectOfType<BossFightControl>();
+        if (controller != null)
+        {
+            controller.OnBossDefeated();
+        }
+
         Destroy(gameObject, 2f);
     }
 
