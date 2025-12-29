@@ -21,7 +21,12 @@ public class SavePoint : MonoBehaviour
             SaveGame();
 
             pc.health = 3;
-            Debug.Log("Can Yenilendi: " + pc.health);
+
+            HealthManager healthUI = FindObjectOfType<HealthManager>();
+            if (healthUI != null)
+            {
+                healthUI.UpdateHealthUI(pc.health); // UI'daki 3 kalbi de aktif eder
+            }
         }
     }
 

@@ -8,8 +8,22 @@ public class BossFightControl : MonoBehaviour
     public GameObject lavaWalls2;
     public GameObject randomBombSpawner;
 
+    [Header("Müzik Ayarlarý")]
+    public MusicPlaylistLoop backgroundPlaylist;
+    public AudioClip bossMusic; 
+    private AudioSource audioSource;
+
     private bool hasTriggered = false;
     private bool isBossDefeated = false;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource != null) audioSource.loop = true;
+
+        if (backgroundPlaylist == null)
+            backgroundPlaylist = FindObjectOfType<MusicPlaylistLoop>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,6 +38,14 @@ public class BossFightControl : MonoBehaviour
         hasTriggered = true;
         SetFightState(true);
 
+        if (backgroundPlaylist != null) backgroundPlaylist.PauseMusic();
+
+        if (audioSource != null && bossMusic != null)
+        {
+            audioSource.clip = bossMusic;
+            audioSource.Play(); 
+        }
+
         if (Boss != null)
         {
             Boss.SetActive(true);
@@ -35,6 +57,10 @@ public class BossFightControl : MonoBehaviour
     {
         isBossDefeated = true;
         SetFightState(false);
+
+        if (audioSource != null) audioSource.Stop(); 
+        if (backgroundPlaylist != null) backgroundPlaylist.ResumeMusic();
+
         Debug.Log("Savaþ Kalýcý Olarak Bitti.");
     }
 
@@ -44,6 +70,9 @@ public class BossFightControl : MonoBehaviour
 
         hasTriggered = false;
         SetFightState(false);
+
+        if (audioSource != null) audioSource.Stop();
+        if (backgroundPlaylist != null) backgroundPlaylist.ResumeMusic();
 
         if (Boss != null) Boss.SetActive(false);
     }

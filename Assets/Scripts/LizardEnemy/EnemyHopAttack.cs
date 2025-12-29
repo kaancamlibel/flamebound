@@ -20,15 +20,10 @@ public class EnemyHopAttack : MonoBehaviour
     private Vector2 moveDir;
     private Animator animator;
 
-    [Header("Audio")]
-    private AudioSource audioSource;
-    public AudioClip attackSound;
-
     void Awake()
     {
         hopAI = GetComponent<EnemySimpleHopAI>();
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
 
         animator.enabled = false;
     }
@@ -87,11 +82,6 @@ public class EnemyHopAttack : MonoBehaviour
     void FireBall()
     {
         if (!isAttacking) return;
-
-        if (audioSource != null && attackSound != null)
-        {
-            audioSource.PlayOneShot(attackSound);
-        }
 
         Vector2 shootDir = hopAI.facingRight ? Vector2.right : Vector2.left;
         GameObject bullet = Instantiate(fireBall, transform.position, Quaternion.identity);

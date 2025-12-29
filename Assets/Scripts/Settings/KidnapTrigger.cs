@@ -32,11 +32,14 @@ public class KidnapTrigger : MonoBehaviour
 
     [Header("Audio Settings")]
     private AudioSource audioSource;
-    public AudioClip startSound; 
+    public AudioClip startSound;
+    public AudioClip backgroundMusic;
+    public MusicPlaylistLoop backgroundPlaylist;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        if (audioSource != null) audioSource.loop = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -49,6 +52,8 @@ public class KidnapTrigger : MonoBehaviour
 
     public void StartEvent()
     {
+        if (backgroundPlaylist != null) backgroundPlaylist.PauseMusic();
+
         hasTriggered = true;
         voidEffect.SetActive(true);
         voidWall.SetActive(true);
@@ -58,14 +63,24 @@ public class KidnapTrigger : MonoBehaviour
             audioSource.PlayOneShot(startSound);
         }
 
+        if (audioSource != null && backgroundMusic != null)
+        {
+            audioSource.clip = backgroundMusic;
+            audioSource.Play();
+        }
+
         lightCtrl.StartKidnapping(finalBattlePoint.position, kidnapSpeed);
         fightCoroutine = StartCoroutine(WaitAndStartFight());
     }
 
     public void ResetTrigger()
     {
+        if (backgroundPlaylist != null) backgroundPlaylist.ResumeMusic();
+
         StopAllCoroutines();
         hasTriggered = false;
+
+        if (audioSource != null) audioSource.Stop();
 
         voidEffect.SetActive(false);
         voidWall.SetActive(false);
@@ -108,7 +123,12 @@ public class KidnapTrigger : MonoBehaviour
 
     void FinishEvent()
     {
+        if (backgroundPlaylist != null) backgroundPlaylist.ResumeMusic();
+
         hasTriggered = false;
+
+        if (audioSource != null) audioSource.Stop();
+
         fireHeartL.SetActive(true);
         voidEffect.SetActive(false);
         voidWall.SetActive(false);

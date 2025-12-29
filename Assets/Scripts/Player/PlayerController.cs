@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public int enemyLayer;
     private bool instantKill = false;
     private bool isDead = false;
+    private HealthManager healthUI;
 
     public Vector2 boxSize = new Vector2(0.5f, 0.1f);
 
@@ -63,6 +64,9 @@ public class PlayerController : MonoBehaviour
         }
 
         enemyLayer = LayerMask.NameToLayer("Enemy");
+
+        healthUI = FindObjectOfType<HealthManager>(); // UI kontrolcüsünü bul
+        if (healthUI != null) healthUI.UpdateHealthUI(health);
     }
 
     private void Update()
@@ -225,6 +229,8 @@ public class PlayerController : MonoBehaviour
         rb.WakeUp();
 
         health = 3;
+        if (healthUI != null) healthUI.UpdateHealthUI(health);
+
         canMove = true;
         isKnockback = false;
 
@@ -295,7 +301,7 @@ public class PlayerController : MonoBehaviour
         if (attacker.layer == enemyLayer && !isKnockback)
         {
             health--;
-            Debug.Log("Current health: " + health);
+            if (healthUI != null) healthUI.UpdateHealthUI(health);
 
             if (effectsAudioSource != null && hurtSound != null)
             {
