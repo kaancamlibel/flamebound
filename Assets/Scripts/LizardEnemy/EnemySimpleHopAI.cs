@@ -34,11 +34,18 @@ public class EnemySimpleHopAI : MonoBehaviour
     private EnemyHopAttack hopAttack;
     public float forcePush = 5f;
 
+    public GameObject enemyDeathEffect;
+
+    [Header("Audio")]
+    private AudioSource audioSource;
+    public AudioClip dieSound;
+
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         hopAttack = GetComponent<EnemyHopAttack>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -145,9 +152,18 @@ public class EnemySimpleHopAI : MonoBehaviour
 
             if (playerRb != null)
             {
-                Debug.Log("Lizard Enemy collided with Player, applying force.");
-
                 playerRb.AddForce(Vector2.up * forcePush, ForceMode2D.Impulse);
+
+                if (audioSource != null && dieSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(dieSound, transform.position);
+                }
+
+                if (enemyDeathEffect != null)
+                {
+                    Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y, 0f);
+                    Instantiate(enemyDeathEffect, spawnPos, Quaternion.identity);
+                }
 
                 Destroy(gameObject, 0.3f);
             }

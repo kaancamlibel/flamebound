@@ -9,7 +9,7 @@ public class BossFightControl : MonoBehaviour
     public GameObject randomBombSpawner;
 
     private bool hasTriggered = false;
-    private bool isBossDefeated = false; 
+    private bool isBossDefeated = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -23,21 +23,29 @@ public class BossFightControl : MonoBehaviour
     {
         hasTriggered = true;
         SetFightState(true);
+
+        if (Boss != null)
+        {
+            Boss.SetActive(true);
+            Boss.GetComponent<DemonBossAI>().ResetBoss();
+        }
     }
 
     public void OnBossDefeated()
     {
-        isBossDefeated = true; 
-        SetFightState(false);  
+        isBossDefeated = true;
+        SetFightState(false);
         Debug.Log("Savaþ Kalýcý Olarak Bitti.");
     }
 
     public void ResetFight()
     {
-        if (isBossDefeated || Boss == null) return;
+        if (isBossDefeated) return;
 
         hasTriggered = false;
         SetFightState(false);
+
+        if (Boss != null) Boss.SetActive(false);
     }
 
     private void SetFightState(bool state)
@@ -46,12 +54,5 @@ public class BossFightControl : MonoBehaviour
         if (lavaWalls1 != null) lavaWalls1.SetActive(state);
         if (lavaWalls2 != null) lavaWalls2.SetActive(state);
         if (randomBombSpawner != null) randomBombSpawner.SetActive(state);
-
-        if (Boss != null)
-        {
-            Boss.SetActive(state);
-        }
-
-        if (state && Boss != null) Boss.SetActive(true);
     }
 }

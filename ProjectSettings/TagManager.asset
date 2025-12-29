@@ -61,6 +61,3 @@ TagManager:
   - name: Player
     uniqueID: 2965671117
     locked: 0
-  - name: FrontProps
-    uniqueID: 2377427607
-    locked: 0

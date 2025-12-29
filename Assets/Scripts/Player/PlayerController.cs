@@ -36,10 +36,20 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 boxSize = new Vector2(0.5f, 0.1f);
 
+    [Header("Audio")]
+    public AudioSource walkAudioSource;   // Inspector'dan ikinci bir AudioSource sürükle
+    public AudioSource effectsAudioSource; // Inspector'dan ana AudioSource'u sürükle
+    public AudioClip walkSound;
+    public AudioClip hurtSound;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        AudioSource[] sources = GetComponents<AudioSource>();
+        walkAudioSource = sources[0];
+        effectsAudioSource = sources[1];
 
         PlayerPrefs.DeleteAll();
     }
@@ -51,7 +61,6 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetFloat("CheckPointX", transform.position.x);
             PlayerPrefs.SetFloat("CheckPointY", transform.position.y);
         }
-
 
         enemyLayer = LayerMask.NameToLayer("Enemy");
     }
@@ -75,6 +84,7 @@ public class PlayerController : MonoBehaviour
 
         GroundControl();
         JumpAnim();
+        HandleWalkingSound();
     }
 
     private void FixedUpdate()
@@ -104,6 +114,23 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetFloat("isRunning", Mathf.Abs(movement.x));
+    }
+
+    void HandleWalkingSound()
+    {
+        if (Mathf.Abs(movement.x) > 0.1f && isGrounded)
+        {
+            if (!walkAudioSource.isPlaying)
+            {
+                walkAudioSource.clip = walkSound;
+                walkAudioSource.loop = true; // Döngüyü aç
+                walkAudioSource.Play();
+            }
+        }
+        else
+        {
+            walkAudioSource.Stop();
+        }
     }
 
     void ApplyJump()
@@ -269,6 +296,11 @@ public class PlayerController : MonoBehaviour
         {
             health--;
             Debug.Log("Current health: " + health);
+
+            if (effectsAudioSource != null && hurtSound != null)
+            {
+                effectsAudioSource.PlayOneShot(hurtSound);
+            }
 
             float dirX = transform.position.x - attacker.transform.position.x;
             Vector2 knockbackDir = new Vector2(Mathf.Sign(dirX), 0);

@@ -33,10 +33,17 @@ public class EnemySimpleAI : MonoBehaviour
 
     public float forcePush = 5f;
 
+    public GameObject enemyDeathEffect;
+
+    [Header("Audio")]
+    private AudioSource audioSource;
+    public AudioClip dieSound;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -170,9 +177,18 @@ public class EnemySimpleAI : MonoBehaviour
 
             if (playerRb != null)
             {
-                Debug.Log("Enemy collided with Player, applying force.");
-
                 playerRb.AddForce(Vector2.up * forcePush, ForceMode2D.Impulse);
+
+                if (audioSource != null && dieSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(dieSound, transform.position);
+                }
+
+                if (enemyDeathEffect != null)
+                {
+                    Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y, 0f);
+                    Instantiate(enemyDeathEffect, spawnPos, Quaternion.identity); 
+                }
 
                 Destroy(gameObject, 0.3f);
             }

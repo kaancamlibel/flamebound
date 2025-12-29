@@ -18,6 +18,10 @@ public class Bomb : MonoBehaviour
     private bool isTimerStarted = false;
     private SpriteRenderer spriteRenderer;
 
+    [Header("Ses Ayarlarý")]
+    public AudioClip explosionSound; 
+    [Range(0, 1)] public float volume = 1f;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -48,6 +52,11 @@ public class Bomb : MonoBehaviour
         if (isExploded) return;
         isExploded = true;
         StopAllCoroutines();
+
+        if (explosionSound != null)
+        {
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position, volume);
+        }
 
         if (explosionVFX != null)
         {

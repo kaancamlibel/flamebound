@@ -11,6 +11,9 @@ public class KeyHeart : MonoBehaviour
 
     private Vector3 startPos;
 
+    [Header("Audio Settings")]
+    public AudioClip collectSound;
+
     private void Start()
     {
         startPos = transform.position;
@@ -31,6 +34,11 @@ public class KeyHeart : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            if (collectSound != null)
+            {
+                AudioSource.PlayClipAtPoint(collectSound, transform.position);
+            }
+
             if (keyDoor != null)
             {
                 keyDoor.AddKey();

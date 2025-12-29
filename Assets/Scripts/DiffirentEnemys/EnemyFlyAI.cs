@@ -6,6 +6,9 @@ public class EnemyFlyAI : MonoBehaviour
     private Transform player;
     private SpriteRenderer spriteRenderer;
 
+    [Header("Audio")]
+    public AudioClip curseSound;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -30,6 +33,11 @@ public class EnemyFlyAI : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            if (curseSound != null)
+            {
+                AudioSource.PlayClipAtPoint(curseSound, transform.position);
+            }
+
             if (CursedManager.Instance != null)
             {
                 CursedManager.Instance.StartCurse();

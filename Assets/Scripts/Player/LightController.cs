@@ -31,9 +31,17 @@ public class LightController : MonoBehaviour
 
     public bool isKidnapped = false;
 
+    public GameObject lightEffect;
+
+    [Header("Audio")]
+    private AudioSource audioSource;
+    public AudioClip forceSound; // F'ye basýnca çýkan dalga sesi
+    public AudioClip collisionSound; // Player çarpýnca çýkan ses
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -54,6 +62,16 @@ public class LightController : MonoBehaviour
         {
             ApplyForce();
             StartCoroutine(ForceDelay());
+
+            if (forceSound != null)
+            {
+                audioSource.PlayOneShot(forceSound); // Dalga sesini çalar
+            }
+
+            if (lightEffect != null)
+            {
+                Instantiate(lightEffect, transform.position, Quaternion.identity);
+            }
         }
 
         movement.x = Input.GetAxisRaw("LightHorizontal");
@@ -259,6 +277,11 @@ public class LightController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isCollidingWithPlayer = true;
+
+            if (collisionSound != null)
+            {
+                audioSource.PlayOneShot(collisionSound);
+            }
 
             currentForce = force * 2;
             ApplyForce();

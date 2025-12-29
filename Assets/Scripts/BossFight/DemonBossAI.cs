@@ -29,9 +29,20 @@ public class DemonBossAI : MonoBehaviour
     private int currentHealth;
     private bool isDead = false;
 
+    [Header("Audio Settings")]
+    private AudioSource audioSource;
+    public AudioClip walkSound;
+    public AudioClip attackSound;
+    public AudioClip fireballSound;
+    public AudioClip deathSound;
+    public AudioClip hurtSound;
+
+    private float walkStepTimer;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -52,11 +63,16 @@ public class DemonBossAI : MonoBehaviour
         }
 
         ChangeRotation();
+        PlayWalkingSound();
     }
 
     private void FixedUpdate()
     {
-        if (isDead) return;
+        if (isDead)
+        {
+            animator.SetBool("isMoving", false); 
+            return;
+        }
 
         if (!isAttacking)
         {
@@ -77,6 +93,19 @@ public class DemonBossAI : MonoBehaviour
         }
     }
 
+    private void PlayWalkingSound()
+    {
+        if (animator.GetBool("isMoving") && !isAttacking && !isDead)
+        {
+            walkStepTimer -= Time.deltaTime;
+            if (walkStepTimer <= 0)
+            {
+                if (walkSound != null) audioSource.PlayOneShot(walkSound, 0.5f);
+                walkStepTimer = 0.5f; // Adým sesleri arasý süre
+            }
+        }
+    }
+
     void CheckForAttack()
     {
         Collider2D hit = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
@@ -89,6 +118,8 @@ public class DemonBossAI : MonoBehaviour
 
     void DealDamage()
     {
+        if (attackSound != null) audioSource.PlayOneShot(attackSound);
+
         Collider2D hit = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
 
         if (hit != null)
@@ -114,6 +145,7 @@ public class DemonBossAI : MonoBehaviour
     {
         currentHealth -= damage;
         animator.SetTrigger("TakeDamage");
+        if (hurtSound != null) audioSource.PlayOneShot(hurtSound);
 
         if (currentHealth <= 0)
         {
@@ -127,20 +159,55 @@ public class DemonBossAI : MonoBehaviour
 
     void Die()
     {
+        if (isDead) return;
         isDead = true;
         canAttack = false;
+
+        animator.SetBool("isMoving", false);
         animator.SetBool("Died", true);
 
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null) rb.velocity = Vector2.zero;
+        if (deathSound != null) audioSource.PlayOneShot(deathSound);
 
-        BossFightControl controller = FindObjectOfType<BossFightControl>();
-        if (controller != null)
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
         {
-            controller.OnBossDefeated();
+            rb.velocity = Vector2.zero;
+            rb.simulated = false;
         }
 
+        BossFightControl controller = FindObjectOfType<BossFightControl>();
+        if (controller != null) controller.OnBossDefeated();
+
         Destroy(gameObject, 2f);
+    }
+
+    public void ResetBoss()
+    {
+        isDead = false;
+        canAttack = true;
+        isAttacking = false;
+        currentHealth = maxHealth;
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.simulated = true;
+        }
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = true;
+
+        // Animasyonlarý sýfýrla
+        animator.SetBool("Died", false);
+        animator.SetBool("isMoving", false);
+        animator.Rebind(); 
+        animator.Update(0f);
+
+        StopAllCoroutines();
+        StartCoroutine(FireballRoutine(3, 1f, 10));
+
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     IEnumerator HitFlash()
@@ -195,6 +262,8 @@ public class DemonBossAI : MonoBehaviour
     {
         if (fireBallPrefab != null)
         {
+            if (fireballSound != null) audioSource.PlayOneShot(fireballSound);
+
             Vector3 spawnPosition = firePoint.position + new Vector3(0, 1f, 0);
             Instantiate(fireBallPrefab, spawnPosition, Quaternion.identity);
         }

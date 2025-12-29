@@ -1,9 +1,20 @@
+using System.Collections;
 using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
     [Header("Teleport Settings")]
     public Transform destination;
+    public GameObject portalEffect;
+
+    [Header("Audio Settings")]
+    private AudioSource audioSource;
+    public AudioClip teleportSound;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -11,7 +22,13 @@ public class Portal : MonoBehaviour
         {
             if (destination != null)
             {
+                if (audioSource != null && teleportSound != null)
+                {
+                    audioSource.PlayOneShot(teleportSound);
+                }
+
                 collision.transform.position = destination.position;
+                StartCoroutine(PortalCooldown());
 
                 Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
                 if (rb != null)
@@ -26,5 +43,12 @@ public class Portal : MonoBehaviour
                 Debug.LogWarning("Hedef (Destination) atanmamýþ!");
             }
         }
+    }
+
+    IEnumerator PortalCooldown()
+    {
+        portalEffect.SetActive(true);
+        yield return new WaitForSeconds(2);
+        portalEffect.SetActive(false);
     }
 }

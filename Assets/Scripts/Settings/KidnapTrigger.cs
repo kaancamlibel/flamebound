@@ -30,6 +30,15 @@ public class KidnapTrigger : MonoBehaviour
     private Coroutine fightCoroutine; 
     private Coroutine wavesCoroutine;
 
+    [Header("Audio Settings")]
+    private AudioSource audioSource;
+    public AudioClip startSound; 
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && !hasTriggered)
@@ -42,7 +51,13 @@ public class KidnapTrigger : MonoBehaviour
     {
         hasTriggered = true;
         voidEffect.SetActive(true);
-        voidWall.SetActive(true); 
+        voidWall.SetActive(true);
+
+        if (audioSource != null && startSound != null)
+        {
+            audioSource.PlayOneShot(startSound);
+        }
+
         lightCtrl.StartKidnapping(finalBattlePoint.position, kidnapSpeed);
         fightCoroutine = StartCoroutine(WaitAndStartFight());
     }

@@ -100,3 +100,5 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  explosionSound: {fileID: 8300000, guid: 05e969172b1426843a2bed02c899529d, type: 3}
+  volume: 1

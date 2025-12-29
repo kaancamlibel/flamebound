@@ -19,6 +19,10 @@ public class ForceBomb : MonoBehaviour
 
     public System.Action OnBombDestroyed;
 
+    [Header("Audio Settings")]
+    public AudioClip explosionSound; 
+    [Range(0, 1)] public float volume = 1f; 
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -77,6 +81,11 @@ public class ForceBomb : MonoBehaviour
     {
         if (isExploded) return;
         isExploded = true;
+
+        if (explosionSound != null)
+        {
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position, volume);
+        }
 
         if (explosionVFX != null)
         {

@@ -5,6 +5,15 @@ public class SavePoint : MonoBehaviour
     private bool isPlayerInRange = false;
     private PlayerController pc;
 
+    [Header("Audio Settings")]
+    private AudioSource audioSource;
+    public AudioClip saveSound;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void Update()
     {
         if (isPlayerInRange && pc != null && Input.GetKeyDown(KeyCode.E))
@@ -18,6 +27,11 @@ public class SavePoint : MonoBehaviour
 
     void SaveGame()
     {
+        if (audioSource != null && saveSound != null)
+        {
+            audioSource.PlayOneShot(saveSound);
+        }
+
         PlayerPrefs.SetFloat("CheckPointX", pc.transform.position.x);
         PlayerPrefs.SetFloat("CheckPointY", pc.transform.position.y);
         PlayerPrefs.SetInt("HasCheckPoint", 1);
