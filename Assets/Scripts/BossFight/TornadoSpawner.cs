@@ -3,26 +3,32 @@ using UnityEngine;
 
 public class TornadoSpawner : MonoBehaviour
 {
-    [Header("///")]
+    [Header("Spawner Points")]
     public Transform spawnerA;
     public Transform spawnerB;
     public GameObject tornadoPrefab;
 
-    [Header("///")]
-    public float tornadoSpeed = 5f; 
+    [Header("Settings")]
+    public float tornadoSpeed = 5f;
     public float spawnInterval = 10f;
 
-    void Start()
+    private void OnEnable()
     {
+        StopAllCoroutines();
         StartCoroutine(SpawnRoutine());
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 
     IEnumerator SpawnRoutine()
     {
+        yield return new WaitForSeconds(5f);
+
         while (true)
         {
-            yield return new WaitForSeconds(spawnInterval);
-
             SpawnAndLaunch(spawnerA);
             yield return new WaitForSeconds(spawnInterval);
 
@@ -33,6 +39,8 @@ public class TornadoSpawner : MonoBehaviour
 
     void SpawnAndLaunch(Transform spawnPoint)
     {
+        if (tornadoPrefab == null) return;
+
         GameObject tornado = Instantiate(tornadoPrefab, spawnPoint.position, Quaternion.identity);
 
         Rigidbody2D rb = tornado.GetComponent<Rigidbody2D>();
@@ -41,6 +49,6 @@ public class TornadoSpawner : MonoBehaviour
             rb.velocity = spawnPoint.right * tornadoSpeed;
         }
 
-        Destroy(tornado, 25f);
+        Destroy(tornado, 5f);
     }
 }

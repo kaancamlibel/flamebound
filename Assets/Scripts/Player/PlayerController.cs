@@ -296,9 +296,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleDamage(GameObject attacker)
+    public void HandleDamage(GameObject attacker)
     {
-        if (attacker.layer == enemyLayer && !isKnockback)
+        bool isEnemy = attacker.layer == LayerMask.NameToLayer("Enemy");
+        bool isBoss = attacker.layer == LayerMask.NameToLayer("Boss");
+
+        if ((isEnemy || isBoss) && !isKnockback)
         {
             health--;
             if (healthUI != null) healthUI.UpdateHealthUI(health);

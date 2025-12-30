@@ -101,7 +101,7 @@ public class DemonBossAI : MonoBehaviour
             if (walkStepTimer <= 0)
             {
                 if (walkSound != null) audioSource.PlayOneShot(walkSound, 0.5f);
-                walkStepTimer = 0.5f; // Adým sesleri arasý süre
+                walkStepTimer = 0.5f;
             }
         }
     }
@@ -127,7 +127,7 @@ public class DemonBossAI : MonoBehaviour
             PlayerController pc = hit.GetComponent<PlayerController>();
             if (pc != null)
             {
-                pc.health--;
+                pc.HandleDamage(this.gameObject);
 
                 StartCoroutine(HitStop(0.12f));
 
@@ -198,7 +198,6 @@ public class DemonBossAI : MonoBehaviour
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = true;
 
-        // Animasyonlarý sýfýrla
         animator.SetBool("Died", false);
         animator.SetBool("isMoving", false);
         animator.Rebind(); 
