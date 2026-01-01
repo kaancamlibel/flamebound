@@ -42,6 +42,13 @@ public class KidnapTrigger : MonoBehaviour
         if (audioSource != null) audioSource.loop = true;
     }
 
+    private void Start()
+    {
+        if (voidWall != null) voidWall.SetActive(true);
+
+        if (voidEffect != null) voidEffect.SetActive(false);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && !hasTriggered)
@@ -83,10 +90,8 @@ public class KidnapTrigger : MonoBehaviour
         if (audioSource != null) audioSource.Stop();
 
         voidEffect.SetActive(false);
-        voidWall.SetActive(false);
-        if (slimePrefab != null) slimePrefab.SetActive(false);
 
-        Debug.Log("Kidnap Etkinliði Sýfýrlandý!");
+        if (slimePrefab != null) slimePrefab.SetActive(false);
     }
 
     IEnumerator WaitAndStartFight()
@@ -132,6 +137,7 @@ public class KidnapTrigger : MonoBehaviour
         fireHeartL.SetActive(true);
         voidEffect.SetActive(false);
         voidWall.SetActive(false);
+
         if (slimePrefab != null) slimePrefab.SetActive(false);
         lightCtrl.isKidnapped = false;
     }
